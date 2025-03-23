@@ -15,7 +15,7 @@ const main = async () => {
         avatarImageUrl:
           "https://u9a6wmr3as.ufs.sh/f/jppBrbk0cChQvcNP9rHlEJu1vCY5kLqzjf29HKaeN78Z6pRy",
         coverImageUrl:
-          "https://u9a6wmr3as.ufs.sh/f/jppBrbk0cChQU3JZGQeTmvPeJLoyOjzNsMqFdxUI423nBl6b",
+          "https://wallpapercave.com/wp/wp1919580.jpg",
       },
     });
     const combosCategory = await tx.menuCategory.create({
