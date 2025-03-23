@@ -16,76 +16,76 @@ datasource db {
 model Restaurant {
   id             String         @id @default(uuid())
   name           String
-  slug           String
+  slug           String         @unique
   description    String
   avatarImageUrl String
   coverImageUrl  String
-  menucategories MenuCategory[] //Isso não é salvo no banco de dados, sevira apenas para o prisma
-  products       Products[] //Isso não é salvo no banco de dados, sevira apenas para o prisma
+  menuCategories MenuCategory[]
+  products       Product[]
   orders         Order[]
-  createdAt      DateTime       @default(now()) //O prisma Atualiza isso sozinho
-  updatedAt      DateTime       @updatedAt //Esse tambem atualiza sozinho
+  createdAt      DateTime       @default(now())
+  updateAt       DateTime       @updatedAt
 }
 
 model MenuCategory {
   id           String     @id @default(uuid())
   name         String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   restaurantId String
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id]) //Para criar a relação entre as tabelas precisa colocar um campo que referencia a outra tabela o campo de referencia sera uma lista de ids
-  products     Products[]
+  products     Product[]
   createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
+  updateAt     DateTime   @updatedAt
 }
 
-model Products {
+model Product {
   id             String         @id @default(uuid())
   name           String
   description    String
   price          Float
   imageUrl       String
   ingredients    String[]
-  restaurant     Restaurant     @relation(fields: [restaurantId], references: [id])
+  orderProduct   OrderProduct[]
+  restaurant     Restaurant     @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   restaurantId   String
-  menucategory   MenuCategory   @relation(fields: [menucategoryId], references: [id])
-  menucategoryId String
-  orders         OrderProduct[]
+  menuCategory   MenuCategory   @relation(fields: [menuCategoryId], references: [id], onDelete: Cascade)
+  menuCategoryId String
   createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  updateAt       DateTime       @updatedAt
 }
 
 model Order {
-  id                 Int               @id @default(autoincrement())
-  total              Float
-  status             OrderStatus
-  consumptionsMethod ConsumptionMethod
-  restaurantId       String
-  restaurant         Restaurant        @relation(fields: [restaurantId], references: [id])
-  orderProducts      OrderProduct[]
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @updatedAt
+  id                Int               @id @default(autoincrement())
+  total             Float
+  status            OrderStatus
+  consumptionMethod ConsumptionMethod
+  restaurant        Restaurant        @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  restaurantId      String
+  orderProducts     OrderProduct[]
+  customerName     String
+  customerCpf      String
+  createdAt         DateTime          @default(now())
+  updateAt          DateTime          @updatedAt
 }
 
 model OrderProduct {
-  id        Int      @id @default(autoincrement())
-  product   Products @relation(fields: [productId], references: [id])
+  id        String   @id @default(uuid())
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId String
-  order     Order    @relation(fields: [orderId], references: [id])
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId   Int
   quantity  Int
   price     Float
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updateAt  DateTime @updatedAt
 }
 
-//Enums são tipos de dados que contem um conjunto de valores pré-definidos que não podem ser alterados tem uma utilidade parecida com as constantes
-//ESSA IA DO GIT E MUITO LOUCA KKKKKKK
 enum OrderStatus {
-  PENDING //Pendente
-  IN_PREPARATION //Em preparação
-  FINISHED //Finalizado
+  PENDING
+  IN_PREPARATION
+  FINISHED
 }
 
 enum ConsumptionMethod {
-  TAKEAWAY //Pegar
-  DINE_IN //Comer no local
+  TAKEAWAY
+  DINE_IN
 }
