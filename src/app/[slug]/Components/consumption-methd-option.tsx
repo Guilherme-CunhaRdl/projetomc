@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import {Button} from "@/components/ui/button";
-import {Card, CardContent} from "@/components/ui/card.tsx";
+import {Card, CardContent} from "@/components/ui/card";
  
  interface consumptionMethodOptionProps{
     slug: string;
@@ -23,7 +23,7 @@ option: consumptionMethod;
           <div className="relative h-[80px] w-[80px]">
             <Image src={imageUrl} fill  alt={imageAlt} className="object-contain"/>
             </div>
-            <Button>
+            <Button asChild>
             <Link href={`/${slug}/menu?consumptionMethod=${option}`}>
             {buttonText}
           </Link>

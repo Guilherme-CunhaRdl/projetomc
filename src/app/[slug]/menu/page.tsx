@@ -1,9 +1,10 @@
-import { ChevronLeftIcon, ScrollTextIcon } from "lucide-react";
-import Image from "next/image";
+
 import { notFound } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
 import { getRestaurantBySlug } from "@/data/get-restaurant-by-slug";
+
+import RestaurantCategories from "./components/categories";
+import RestaurantHeader from "./components/header";
 
 interface RestaurantMenuPageProps {
   params: Promise<{ slug: string }>;
@@ -29,24 +30,8 @@ const RestaurantMenuPage = async ({
 
   return (
     <div>
-      <div className="relative h-[250px] w-full">
-        <Button
-          variant="secondary"
-          size="icon"
-          className="absolute left-4 top-4 z-50 rounded-full"
-        >
-          <ChevronLeftIcon/>
-        </Button>
-        <Image src={restaurant?.coverImageUrl} alt={restaurant.name} fill />
-
-        <Button
-          variant="secondary"
-          size="icon"
-          className="absolute right-4 top-4 z-50 rounded-full"
-        >
-          <ScrollTextIcon/>
-        </Button>
-      </div>
+      <RestaurantHeader restaurant={restaurant} />
+      <RestaurantCategories restaurant={restaurant} />
     </div>
   );
 };
